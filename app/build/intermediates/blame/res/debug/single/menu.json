@@ -1,0 +1,18 @@
+[
+    {
+        "merged": "E:\\DemoPrjMain\\DemoPrj\\app\\build\\intermediates\\res\\merged\\debug\\menu\\menu_search_popup.xml",
+        "source": "E:\\DemoPrjMain\\DemoPrj\\app\\src\\main\\res\\menu\\menu_search_popup.xml"
+    },
+    {
+        "merged": "E:\\DemoPrjMain\\DemoPrj\\app\\build\\intermediates\\res\\merged\\debug\\menu\\menu_customer_detail_info.xml",
+        "source": "E:\\DemoPrjMain\\DemoPrj\\app\\src\\main\\res\\menu\\menu_customer_detail_info.xml"
+    },
+    {
+        "merged": "E:\\DemoPrjMain\\DemoPrj\\app\\build\\intermediates\\res\\merged\\debug\\menu\\menu_particular_customer_detail_info.xml",
+        "source": "E:\\DemoPrjMain\\DemoPrj\\app\\src\\main\\res\\menu\\menu_particular_customer_detail_info.xml"
+    },
+    {
+        "merged": "E:\\DemoPrjMain\\DemoPrj\\app\\build\\intermediates\\res\\merged\\debug\\menu\\menu_search_delivery_popup.xml",
+        "source": "E:\\DemoPrjMain\\DemoPrj\\app\\src\\main\\res\\menu\\menu_search_delivery_popup.xml"
+    }
+]

@@ -1,0 +1,22 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/toolbarContainer"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp">
+
+    <Button
+        android:id="@+id/btnExpenseAdminDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="@drawable/edittext_boarder" />
+
+     <android.support.v7.widget.RecyclerView
+        android:id="@+id/rvExpenseDetail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+         android:layout_marginTop="5dp"
+        android:layout_below="@+id/btnExpenseAdminDate"
+        android:clipToPadding="false" />
+
+</RelativeLayout>

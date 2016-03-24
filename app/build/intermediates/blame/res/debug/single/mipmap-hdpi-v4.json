@@ -1,0 +1,58 @@
+[
+    {
+        "merged": "E:\\DemoPrjMain\\DemoPrj\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-hdpi-v4\\ic_edit.png",
+        "source": "E:\\DemoPrjMain\\DemoPrj\\app\\src\\main\\res\\mipmap-hdpi\\ic_edit.png"
+    },
+    {
+        "merged": "E:\\DemoPrjMain\\DemoPrj\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-hdpi-v4\\ic_filter.png",
+        "source": "E:\\DemoPrjMain\\DemoPrj\\app\\src\\main\\res\\mipmap-hdpi\\ic_filter.png"
+    },
+    {
+        "merged": "E:\\DemoPrjMain\\DemoPrj\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-hdpi-v4\\ic_service.png",
+        "source": "E:\\DemoPrjMain\\DemoPrj\\app\\src\\main\\res\\mipmap-hdpi\\ic_service.png"
+    },
+    {
+        "merged": "E:\\DemoPrjMain\\DemoPrj\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-hdpi-v4\\ic_directions.png",
+        "source": "E:\\DemoPrjMain\\DemoPrj\\app\\src\\main\\res\\mipmap-hdpi\\ic_directions.png"
+    },
+    {
+        "merged": "E:\\DemoPrjMain\\DemoPrj\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-hdpi-v4\\ic_launcher.png",
+        "source": "E:\\DemoPrjMain\\DemoPrj\\app\\src\\main\\res\\mipmap-hdpi\\ic_launcher.png"
+    },
+    {
+        "merged": "E:\\DemoPrjMain\\DemoPrj\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-hdpi-v4\\ic_date.png",
+        "source": "E:\\DemoPrjMain\\DemoPrj\\app\\src\\main\\res\\mipmap-hdpi\\ic_date.png"
+    },
+    {
+        "merged": "E:\\DemoPrjMain\\DemoPrj\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-hdpi-v4\\ic_done.png",
+        "source": "E:\\DemoPrjMain\\DemoPrj\\app\\src\\main\\res\\mipmap-hdpi\\ic_done.png"
+    },
+    {
+        "merged": "E:\\DemoPrjMain\\DemoPrj\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-hdpi-v4\\ic_arrow_black.png",
+        "source": "E:\\DemoPrjMain\\DemoPrj\\app\\src\\main\\res\\mipmap-hdpi\\ic_arrow_black.png"
+    },
+    {
+        "merged": "E:\\DemoPrjMain\\DemoPrj\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-hdpi-v4\\ic_person.png",
+        "source": "E:\\DemoPrjMain\\DemoPrj\\app\\src\\main\\res\\mipmap-hdpi\\ic_person.png"
+    },
+    {
+        "merged": "E:\\DemoPrjMain\\DemoPrj\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-hdpi-v4\\ic_clear.png",
+        "source": "E:\\DemoPrjMain\\DemoPrj\\app\\src\\main\\res\\mipmap-hdpi\\ic_clear.png"
+    },
+    {
+        "merged": "E:\\DemoPrjMain\\DemoPrj\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-hdpi-v4\\nearby.png",
+        "source": "E:\\DemoPrjMain\\DemoPrj\\app\\src\\main\\res\\mipmap-hdpi\\nearby.png"
+    },
+    {
+        "merged": "E:\\DemoPrjMain\\DemoPrj\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-hdpi-v4\\ic_delete.png",
+        "source": "E:\\DemoPrjMain\\DemoPrj\\app\\src\\main\\res\\mipmap-hdpi\\ic_delete.png"
+    },
+    {
+        "merged": "E:\\DemoPrjMain\\DemoPrj\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-hdpi-v4\\refresh.png",
+        "source": "E:\\DemoPrjMain\\DemoPrj\\app\\src\\main\\res\\mipmap-hdpi\\refresh.png"
+    },
+    {
+        "merged": "E:\\DemoPrjMain\\DemoPrj\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-hdpi-v4\\ic_add.png",
+        "source": "E:\\DemoPrjMain\\DemoPrj\\app\\src\\main\\res\\mipmap-hdpi\\ic_add.png"
+    }
+]

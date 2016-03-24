@@ -1,0 +1,109 @@
+<resources>
+    <string name="app_name">DatarDistributor</string>
+    <string name="app_name_datar">DatarDistributor</string>
+    <string name="Username">Username</string>
+    <string name="Password">Password</string>
+    <string name="login">Login</string>
+    <string name="Field_require">This field is required</string>
+
+    <string name="CustomerNumber">Customer Id</string>
+    <string name="Domestic">Domestic</string>
+    <string name="Commercial">Commercial</string>
+    <string name="Type">Type</string>
+    <string name="Service">New Service</string>
+    <string name="ServiceCharge">Service Charge</string>
+    <string name="ServiceNote">Service Note</string>
+    <string name="DeliveryCharge">Delivery Charge</string>
+    <string name="DeliveryTotal">Delivery Total : </string>
+    <string name="select_Gas_Size">Select Gas Size</string>
+    <string name="Quantity">Quantity</string>
+    <string name="Total">Total Paid Amount : </string>
+    <string name="Book">Book</string>
+    <string name="GasQuantity">1</string>
+
+    <string name="Name">Name : </string>
+    <string name="Address">Address : </string>
+    <string name="PhoneNumber">Ph No : </string>
+    <string name="Quantity1">Quantity : </string>
+    <string name="ServiceNote1">Service Note : </string>
+    <string name="ServiceCharge1">Service Charge : </string>
+
+    <string name="CustomerId">Customer Id : </string>
+    <string name="CustomerName">Name : </string>
+    <string name="CustomerAddress">Address : </string>
+    <string name="CustomerPhoneNumber">Phone Number : </string>
+    <string name="CustomerSecondaryPhoneNumber">Secondary Number : </string>
+    <string name="CustomerEmail">Email ID : </string>
+    <string name="CustomerLandmark">Landmark : </string>
+    <string name="CustomerBDate">Booking Date : </string>
+    <string name="CustomerDDate">Delivery Date : </string>
+    <string name="CustomerDeliveryBoy">Delivery Boy : </string>
+    <string name="CustomerGasType">Gas Type : </string>
+    <string name="CustomerGasSize">Gas Size : </string>
+    <string name="CustomerDeliveryCharge">Delivery Charge : </string>
+    <string name="CustomerType">Type : </string>
+    <string name="CustomerGasQuantity">Quantity : </string>
+    <string name="CustomerGasPrice">Gas Price : </string>
+    <string name="CustomerTotal">Total : </string>
+    <string name="ChangeDeliveryBoy">Change Delivery Boy </string>
+    <string name="Delete">Delete Detail </string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_particular_customer_detail_info">Particular Customer Detail Info
+    </string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="Save">Save</string>
+    <string name="First">Fist name :</string>
+    <string name="Middle">Middle name :</string>
+    <string name="Last">Last name :</string>
+    <string name="LatLng">LatLng : </string>
+    <string name="DOB">DOB : </string>
+
+    <string name="FirstName">Fist Name</string>
+    <string name="MiddleName">Middle Name</string>
+    <string name="LastName">Last Name</string>
+    <string name="Add">Address</string>
+    <string name="Landmark">Landmark</string>
+    <string name="PhNo">Phone Number</string>
+    <string name="SeNo">Secondary Number</string>
+    <string name="Email">Email ID</string>
+    <string name="Dob">Date of Birth</string>
+    <string name="DisplayDirection">Display Direction</string>
+    <array name="GasSize">
+        <item>Domestic</item>
+        <item>Commercial</item>
+    </array>
+    <string name="title_activity_map">Map</string>
+    <string name="title_activity_add_customer_detail">Add Customer Detail</string>
+    <string name="title_activity_Particular_delivery_detail">Particular Delivery Detail</string>
+    <string name="title_activity_demo">Demo</string>
+
+    <string name="By_Id">By Id</string>
+    <string name="By_Name">By Name</string>
+    <string name="By_Address">By Address</string>
+
+    <string name="Search_By_Id">Search By Id</string>
+    <string name="Search_By_Name">Search By Name</string>
+    <string name="Search_By_Address">Search By Address</string>
+    <string name="Search_By_Last_1">Last 1 days</string>
+    <string name="Search_By_Last_7">Last 7 days</string>
+    <string name="Search_By_Last_10">Last 10 days</string>
+    <string name="Search_By_Last_15">Last 15 days</string>
+    <string name="Deliver">Delivered</string>
+    <string name="Undeliver">Undelivered</string>
+    <string name="CustomerDetail">Customer Info</string>
+    <string name="LastTransaction">Last Transaction</string>
+
+    <string name="Price">Price</string>
+    <string name="ChangePrice">Change Price</string>
+
+    <string name="SetLatLng">Delivered \u0026 Save Location</string>
+    <string name="ExpenseCharge">Expense Charge</string>
+    <string name="Expense">Expense : </string>
+    <string name="ExpenseDetail">Expense Detail</string>
+    <string name="Submit">Submit</string>
+</resources>
