@@ -8,12 +8,12 @@
         "source": "E:\\DemoPrjMain\\DemoPrj\\app\\src\\main\\res\\mipmap-mdpi\\ic_launcher.png"
     },
     {
-        "merged": "E:\\DemoPrjMain\\DemoPrj\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-mdpi-v4\\ic_delete.png",
-        "source": "E:\\DemoPrjMain\\DemoPrj\\app\\src\\main\\res\\mipmap-mdpi\\ic_delete.png"
-    },
-    {
         "merged": "E:\\DemoPrjMain\\DemoPrj\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-mdpi-v4\\ic_add.png",
         "source": "E:\\DemoPrjMain\\DemoPrj\\app\\src\\main\\res\\mipmap-mdpi\\ic_add.png"
+    },
+    {
+        "merged": "E:\\DemoPrjMain\\DemoPrj\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-mdpi-v4\\ic_delete.png",
+        "source": "E:\\DemoPrjMain\\DemoPrj\\app\\src\\main\\res\\mipmap-mdpi\\ic_delete.png"
     },
     {
         "merged": "E:\\DemoPrjMain\\DemoPrj\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-mdpi-v4\\ic_filter.png",
@@ -32,20 +32,20 @@
         "source": "E:\\DemoPrjMain\\DemoPrj\\app\\src\\main\\res\\mipmap-mdpi\\ic_clear.png"
     },
     {
-        "merged": "E:\\DemoPrjMain\\DemoPrj\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-mdpi-v4\\refresh.png",
-        "source": "E:\\DemoPrjMain\\DemoPrj\\app\\src\\main\\res\\mipmap-mdpi\\refresh.png"
-    },
-    {
         "merged": "E:\\DemoPrjMain\\DemoPrj\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-mdpi-v4\\ic_edit.png",
         "source": "E:\\DemoPrjMain\\DemoPrj\\app\\src\\main\\res\\mipmap-mdpi\\ic_edit.png"
     },
     {
-        "merged": "E:\\DemoPrjMain\\DemoPrj\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-mdpi-v4\\ic_service.png",
-        "source": "E:\\DemoPrjMain\\DemoPrj\\app\\src\\main\\res\\mipmap-mdpi\\ic_service.png"
+        "merged": "E:\\DemoPrjMain\\DemoPrj\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-mdpi-v4\\refresh.png",
+        "source": "E:\\DemoPrjMain\\DemoPrj\\app\\src\\main\\res\\mipmap-mdpi\\refresh.png"
     },
     {
         "merged": "E:\\DemoPrjMain\\DemoPrj\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-mdpi-v4\\ic_arrow_black.png",
         "source": "E:\\DemoPrjMain\\DemoPrj\\app\\src\\main\\res\\mipmap-mdpi\\ic_arrow_black.png"
+    },
+    {
+        "merged": "E:\\DemoPrjMain\\DemoPrj\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-mdpi-v4\\ic_service.png",
+        "source": "E:\\DemoPrjMain\\DemoPrj\\app\\src\\main\\res\\mipmap-mdpi\\ic_service.png"
     },
     {
         "merged": "E:\\DemoPrjMain\\DemoPrj\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-mdpi-v4\\ic_done.png",

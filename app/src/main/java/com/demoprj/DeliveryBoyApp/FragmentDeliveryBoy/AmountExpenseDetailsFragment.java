@@ -95,13 +95,13 @@ public class AmountExpenseDetailsFragment extends Fragment implements View.OnCli
                 @Override
                 public void done(List<Expense> objects, ParseException e) {
                     if (e == null) {
-                        if(objects.size()>0){
-                            adapter = new ExpenseDetailAdapter(getActivity(), (ArrayList<Expense>) objects,btnExpenseAdminDate.getText().toString());
-                            rvExpenseDetail.setAdapter(adapter);
-                        }else{
-                            adapter = new ExpenseDetailAdapter(getActivity(), new ArrayList<Expense>(),btnExpenseAdminDate.getText().toString());
-                            rvExpenseDetail.setAdapter(adapter);
-                        }
+//                        if(objects.size()>0){
+//                            adapter = new ExpenseDetailAdapter(getActivity(), (ArrayList<Expense>) objects,btnExpenseAdminDate.getText().toString());
+//                            rvExpenseDetail.setAdapter(adapter);
+//                        }else{
+//                            adapter = new ExpenseDetailAdapter(getActivity(), new ArrayList<Expense>(),btnExpenseAdminDate.getText().toString());
+//                            rvExpenseDetail.setAdapter(adapter);
+//                        }
                     }
                     else
                     {

@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,6 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.demoprj.BaseRequest.RestModel.TransactionDetail;
 import com.demoprj.Constant.AppConstant;
 import com.demoprj.Fragment.DeliveryDetailsFragment;
 import com.demoprj.ParseModel.DeliveryModel;
@@ -44,14 +46,22 @@ import java.util.List;
  */
 public class DeliveryDetailAdapter extends RecyclerView.Adapter<DeliveryDetailAdapter.ViewHolder> {
 
-    ArrayList<GasBooking> userList = new ArrayList<>();
+    //    ArrayList<GasBooking> userList = new ArrayList<>();
     Context context;
+    List<TransactionDetail> transactionDetailList;
     int fromWhere;
-    public DeliveryDetailAdapter(Context context, ArrayList<GasBooking> userList,int fromWhere){
+//    public DeliveryDetailAdapter(Context context, ArrayList<GasBooking> userList,int fromWhere){
+//        this.context = context;
+//        this.userList = userList;
+//        this.fromWhere = fromWhere;
+//    }
+
+    public DeliveryDetailAdapter(Context context , List<TransactionDetail> transactionDetailList, int fromWhere) {
         this.context = context;
-        this.userList = userList;
+        this.transactionDetailList = transactionDetailList;
         this.fromWhere = fromWhere;
     }
+
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View v = LayoutInflater.from(viewGroup.getContext())
@@ -63,8 +73,9 @@ public class DeliveryDetailAdapter extends RecyclerView.Adapter<DeliveryDetailAd
     @Override
     public void onBindViewHolder(final ViewHolder viewHolder, final int i) {
         final DeliveryModel Dm = new DeliveryModel();
-        User u = (User) userList.get(i).get(AppConstant.GASBOOKING_USER_ID);
-        if(Utils.isInternetAvailable(context)) {
+        final TransactionDetail details = transactionDetailList.get(i);
+//        User u = (User) userList.get(i).get(AppConstant.GASBOOKING_USER_ID);
+        if (Utils.isInternetAvailable(context)) {
 //            ParseQuery<User> userQuery = ParseQuery.getQuery(User.class);
 //            userQuery.whereEqualTo(AppConstant.OBJECT_ID, u.getObjectId());
 //            userQuery.findInBackground(new FindCallback<User>() {
@@ -72,71 +83,75 @@ public class DeliveryDetailAdapter extends RecyclerView.Adapter<DeliveryDetailAd
 //                public void done(List<User> objects, ParseException e) {
 //                    if (e == null) {
 //                        if (objects.size() > 0) {
-                            viewHolder.lblDeliveryCustomerId.setText(u.getCustomerId() + "");
-                            viewHolder.lblDeliveryCustomerName.setText(u.getFirstName() + " " + u.getLastName());
-                            Dm.setName(u.getFirstName() + " " + u.getLastName());
-                            Dm.setCustomerId(u.getCustomerId());
-                            viewHolder.lblDeliveryCustomerLandmark.setText(u.getLandmark());
-                            Dm.setLandmark(u.getLandmark());
-                            if (!userList.get(i).getisService()) {
-                                final GasType gasType = (GasType) u.get(AppConstant.USER_GAS_TYPE_ID);
-                                ParseQuery<GasType> gasTypeQuery = ParseQuery.getQuery(GasType.class);
-                                gasTypeQuery.whereEqualTo(AppConstant.OBJECT_ID, gasType.getObjectId());
-                                gasTypeQuery.findInBackground(new FindCallback<GasType>() {
-                                    @Override
-                                    public void done(List<GasType> objects, ParseException e) {
-                                        if (e == null) {
-                                            if (objects.size() > 0) {
-                                                viewHolder.lblDeliveryGasType.setText(objects.get(0).getGasType());
-                                                Dm.setType(objects.get(0).getGasType());
-                                            }
-                                        } else {
-
-                                        }
-                                    }
-                                });
-                            }
+            viewHolder.lblDeliveryCustomerId.setText(details.getUserInfoId() + "");
+            viewHolder.lblDeliveryCustomerName.setText(details.getFullName());
+//                            Dm.setName(u.getFirstName() + " " + u.getLastName());
+//                            Dm.setCustomerId(u.getCustomerId());
+            viewHolder.lblDeliveryCustomerLandmark.setText(details.getLandmark());
+//                            Dm.setLandmark(u.getLandmark());
+            if (!details.getIsService().equals(1)) {
+//                                final GasType gasType = (GasType) u.get(AppConstant.USER_GAS_TYPE_ID);
+//                                ParseQuery<GasType> gasTypeQuery = ParseQuery.getQuery(GasType.class);
+//                                gasTypeQuery.whereEqualTo(AppConstant.OBJECT_ID, gasType.getObjectId());
+//                                gasTypeQuery.findInBackground(new FindCallback<GasType>() {
+//                                    @Override
+//                                    public void done(List<GasType> objects, ParseException e) {
+//                                        if (e == null) {
+//                                            if (objects.size() > 0) {
+                viewHolder.lblDeliveryGasType.setText(details.getGasType());
+//                                                Dm.setType(objects.get(0).getGasType());
+//                                            }
+//                                        } else {
+//
+//                                        }
+//                                    }
+//                                });
+            }
 
 //                        }
 //                    }
 //                }
 //            });
-            viewHolder.chbDeliverUndeliver.setChecked(userList.get(i).getDeliverySatus());
+//            if (!details.getDateOfDelivery().equals("0000-00-00 00:00:00"))
+            boolean deleiveryStatus = details.getDateOfDelivery().equals("0000-00-00 00:00:00");
+            viewHolder.chbDeliverUndeliver.setChecked(!deleiveryStatus);
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM hh:mm aa");
-            if(userList.get(i).getDeliverySatus()){
-                Date DeliveryDate = userList.get(i).getDateOfDelivery();
-                Date BookingDate = userList.get(i).getDateOfBooking();
-                Log.e("Booking & deliverDate",BookingDate+"    :::::    "+DeliveryDate);
+            if (!deleiveryStatus) {
+                Date DeliveryDate = getDate(details.getDateOfDelivery());
+                Date BookingDate = getDate(details.getDateOfBooking());
+                Log.e("Booking & deliverDate", BookingDate + "    :::::    " + DeliveryDate);
                 viewHolder.llDeliveryDate.setVisibility(View.VISIBLE);
                 viewHolder.lblDeliveryCustomerBDate.setText(sdf.format(BookingDate));
                 viewHolder.lblDeliveryCustomerDDate.setText(sdf.format(DeliveryDate));
-            }else{
-                Date BookingDate1 = userList.get(i).getDateOfBooking();
-                Log.e("Booking ",BookingDate1+"");
+            } else {
+                Date BookingDate1 = getDate(details.getDateOfBooking());
+                Log.e("Booking ", BookingDate1 + "");
                 viewHolder.lblDeliveryCustomerBDate.setText(sdf.format(BookingDate1));
                 viewHolder.llDeliveryDate.setVisibility(View.GONE);
             }
 
-            if (userList.get(i).getisService()) {
+            if (details.getIsService().equals(1)) {
                 viewHolder.llDeliveryServiceCharge.setVisibility(View.VISIBLE);
                 viewHolder.llDeliveryServiceNote.setVisibility(View.VISIBLE);
                 viewHolder.ivService.setVisibility(View.VISIBLE);
                 viewHolder.llDeliverySizePrice.setVisibility(View.GONE);
                 viewHolder.llDeliveryTypeQuantity.setVisibility(View.GONE);
                 viewHolder.llDeliveryChargeTotal.setVisibility(View.GONE);
-                viewHolder.lblDeliveryServiceCharge.setText(userList.get(i).getServiceCharge());
-                Dm.setServiceCharge(userList.get(i).getServiceCharge());
-                viewHolder.lblDeliveryServiceNote.setText(userList.get(i).getServiceNote());
-                Dm.setServiceNote(userList.get(i).getServiceNote());
+                viewHolder.lblDeliveryServiceCharge.setText(details.getServiceCharge());
+//                Dm.setServiceCharge(details.getServiceCharge());
+                viewHolder.lblDeliveryServiceNote.setText(details.getServiceNote() + "");
+//                Dm.setServiceNote(details.getServiceNote());
             } else {
-                if(userList.get(i).has(AppConstant.GASBOOKING_DELIVERY_CHARGE) && (!userList.get(i).getDeliveryCharge().equals(""))) {
-                    viewHolder.lblDeliveryGasPrice.setText((userList.get(i).getTotal() - (Double.parseDouble(userList.get(i).getDeliveryCharge()))) + "");
-                    viewHolder.lblDeliveryCharge.setText(userList.get(i).getDeliveryCharge() + "");
-                    viewHolder.lblDeliveryTotal.setText(userList.get(i).getTotal() + "");
-                }else{
-                    viewHolder.lblDeliveryGasPrice.setText(userList.get(i).getTotal() + "");
+                double total = Double.parseDouble(details.getTotal());
+                if  (!details.getDeliveryCharge().equals("")) {
+                    double charge =  (double)Integer.parseInt(details.getDeliveryCharge());
+                    viewHolder.lblDeliveryGasPrice.setText((total - charge) + "");
+                    viewHolder.lblDeliveryCharge.setText(charge + "");
+                    viewHolder.lblDeliveryTotal.setText(total + "");
+                } else {
+                    viewHolder.lblDeliveryGasPrice.setText(total + "");
                     viewHolder.lblDeliveryCharge.setText("0");
-                    viewHolder.lblDeliveryTotal.setText(userList.get(i).getTotal()+"");
+                    viewHolder.lblDeliveryTotal.setText(total + "");
                 }
                 viewHolder.llDeliveryServiceCharge.setVisibility(View.GONE);
                 viewHolder.llDeliveryServiceNote.setVisibility(View.GONE);
@@ -144,39 +159,52 @@ public class DeliveryDetailAdapter extends RecyclerView.Adapter<DeliveryDetailAd
                 viewHolder.llDeliverySizePrice.setVisibility(View.VISIBLE);
                 viewHolder.llDeliveryTypeQuantity.setVisibility(View.VISIBLE);
                 viewHolder.llDeliveryChargeTotal.setVisibility(View.VISIBLE);
-                Dm.setPrice(userList.get(i).getTotal());
-                GasSize gasSize = (GasSize) userList.get(i).get(AppConstant.GASBOOKING_GAS_SIZE_ID);
-                ParseQuery<GasSize> gasSizeQuery = ParseQuery.getQuery(GasSize.class);
-                if(gasSize!=null) {
+//                Dm.setPrice(userList.get(i).getTotal());
+//                GasSize gasSize = (GasSize) userList.get(i).get(AppConstant.GASBOOKING_GAS_SIZE_ID);
+//                ParseQuery<GasSize> gasSizeQuery = ParseQuery.getQuery(GasSize.class);
+//                if (gasSize != null) {
 //                        gasSizeQuery.whereEqualTo(AppConstant.OBJECT_ID, gasSize.getObjectId());
 //                        gasSizeQuery.findInBackground(new FindCallback<GasSize>() {
 //                            @Override
 //                            public void done(List<GasSize> objects, ParseException e) {
 //                                if (e == null) {
 //                                    if (objects.size() > 0) {
-                                        viewHolder.lblDeliveryGasSize.setText(gasSize.getGasSize() + "");
-                                        Dm.setSize(gasSize.getGasSize());
+                    viewHolder.lblDeliveryGasSize.setText(details.getGasSize() + "");
+//                    Dm.setSize(gasSize.getGasSize());
 //                                    }
 //                                } else {
 //
 //                                }
 //                            }
 //                        });
-                }
+//                }
 //            viewHolder.lblDeliveryGasSize.setText(gasSize.getGasSize()+"");
-                viewHolder.lblDeliveryGasQuantity.setText(userList.get(i).getQuantity() + "");
-                Dm.setObjectId(userList.get(i).getObjectId());
-                Dm.setQuantity(userList.get(i).getQuantity());
-                DeliveryDetailsFragment.DeliveryList.add(Dm);
+                viewHolder.lblDeliveryGasQuantity.setText(details.getQuantity() + "");
+//                Dm.setObjectId(userList.get(i).getObjectId());
+//                Dm.setQuantity(userList.get(i).getQuantity());
+//                DeliveryDetailsFragment.DeliveryList.add(Dm);
             }
-        }else {
+        } else {
             Toast.makeText(context, "Internet Connection is not avaliable. Please try again later", Toast.LENGTH_LONG).show();
         }
     }
 
+    private Date getDate(String dateOfDelivery) {
+//        0000-00-00 00:00:00
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        Date date = new Date();
+        try {
+            date = format.parse(dateOfDelivery);
+            System.out.println(date);
+        } catch (java.text.ParseException e) {
+            e.printStackTrace();
+        }
+        return date;
+    }
+
     @Override
     public int getItemCount() {
-        return userList.size();
+        return transactionDetailList.size();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, CompoundButton.OnCheckedChangeListener {
@@ -217,38 +245,41 @@ public class DeliveryDetailAdapter extends RecyclerView.Adapter<DeliveryDetailAd
 
             ivService = (ImageView) itemView.findViewById(R.id.ivService);
 
-            lblDeliveryTotal = (TextView)itemView.findViewById(R.id.lblDeliveryTotal);
-            lblDeliveryCharge = (TextView)itemView.findViewById(R.id.lblDeliveryCharge);
-            lblDeliveryCustomerBDate = (TextView)itemView.findViewById(R.id.lblDeliveryCustomerBDate);
-            lblDeliveryCustomerDDate = (TextView)itemView.findViewById(R.id.lblDeliveryCustomerDDate);
-            lblDeliveryServiceCharge = (TextView)itemView.findViewById(R.id.lblDeliveryServiceCharge);
-            lblDeliveryServiceNote = (TextView)itemView.findViewById(R.id.lblDeliveryServiceNote);
-            lblDeliveryCustomerId = (TextView)itemView.findViewById(R.id.lblDeliveryCustomerId);
-            lblDeliveryCustomerName = (TextView)itemView.findViewById(R.id.lblDeliveryCustomerName);
-            lblDeliveryCustomerLandmark = (TextView)itemView.findViewById(R.id.lblDeliveryCustomerLandmark);
-            lblDeliveryGasType = (TextView)itemView.findViewById(R.id.lblDeliveryGasType);
-            lblDeliveryGasPrice = (TextView)itemView.findViewById(R.id.lblDeliveryGasPrice);
-            lblDeliveryGasSize = (TextView)itemView.findViewById(R.id.lblDeliveryGasSize);
-            lblDeliveryGasQuantity = (TextView)itemView.findViewById(R.id.lblDeliveryGasQuantity);
+            lblDeliveryTotal = (TextView) itemView.findViewById(R.id.lblDeliveryTotal);
+            lblDeliveryCharge = (TextView) itemView.findViewById(R.id.lblDeliveryCharge);
+            lblDeliveryCustomerBDate = (TextView) itemView.findViewById(R.id.lblDeliveryCustomerBDate);
+            lblDeliveryCustomerDDate = (TextView) itemView.findViewById(R.id.lblDeliveryCustomerDDate);
+            lblDeliveryServiceCharge = (TextView) itemView.findViewById(R.id.lblDeliveryServiceCharge);
+            lblDeliveryServiceNote = (TextView) itemView.findViewById(R.id.lblDeliveryServiceNote);
+            lblDeliveryCustomerId = (TextView) itemView.findViewById(R.id.lblDeliveryCustomerId);
+            lblDeliveryCustomerName = (TextView) itemView.findViewById(R.id.lblDeliveryCustomerName);
+            lblDeliveryCustomerLandmark = (TextView) itemView.findViewById(R.id.lblDeliveryCustomerLandmark);
+            lblDeliveryGasType = (TextView) itemView.findViewById(R.id.lblDeliveryGasType);
+            lblDeliveryGasPrice = (TextView) itemView.findViewById(R.id.lblDeliveryGasPrice);
+            lblDeliveryGasSize = (TextView) itemView.findViewById(R.id.lblDeliveryGasSize);
+            lblDeliveryGasQuantity = (TextView) itemView.findViewById(R.id.lblDeliveryGasQuantity);
             itemView.setOnClickListener(this);
             chbDeliverUndeliver.setOnCheckedChangeListener(this);
         }
 
         @Override
         public void onClick(View v) {
-            if(Utils.isInternetAvailable(context)) {
-                if (!userList.get(getPosition()).getDeliverySatus()) {
+            if (Utils.isInternetAvailable(context)) {
+                boolean deleiveryStatus = transactionDetailList.get(getPosition()).getDateOfDelivery().equals("0000-00-00 00:00:00");
+                if (deleiveryStatus) {
                     Intent next = new Intent(context, ParticularDeliveryDetail.class);
-                    next.putExtra("ObjectId", userList.get(getPosition()).getObjectId());
+                    TransactionDetail details = transactionDetailList.get(getPosition());
+                    next.putExtra("details", details);
+                    next.putExtra("ObjectId", 2+"");
                     context.startActivity(next);
                 }
-            }else {
+            } else {
                 Toast.makeText(context, "Internet Connection is not avaliable. Please try again later", Toast.LENGTH_LONG).show();
             }
         }
 
         @Override
-        public void onCheckedChanged(CompoundButton buttonView, final boolean isChecked) {
+        public void onCheckedChanged(CompoundButton buttonView, final boolean isChecked) {}/*{
             if (userList.get(getPosition()).getDeliverySatus() != isChecked) {
                 AlertDialog.Builder AD = new AlertDialog.Builder(context);
                 AD.setTitle("Alert");
@@ -318,6 +349,6 @@ public class DeliveryDetailAdapter extends RecyclerView.Adapter<DeliveryDetailAd
                     AD.show();
                 }
             }
-        }
+        }*/
     }
 }

@@ -23,6 +23,8 @@ public class AppController {
     public static String API_GET_GAS_SIZE = "/get-gas-size";
     public static String API_GET_ALL_GAS_SIZE = "/gas-size";
     public static String API_MODIFY_SIZE_CHARGE = "/modify-size-charge";
+    public static String API_AMOUNT_DETAIL = "/amount-detail";
+    public static String API_DELIEVERY_BOTTLE_DETAIL = "/delivery-bottle-detail";
 
     public static String CUSTOMERID = "customer_id";
     public static String FIRSTNAME = "first_name";
@@ -53,4 +55,8 @@ public class AppController {
     public static String GB_QUANTITY = "quantity";
     public static String LOGIN_USERNAME = "username";
     public static String LOGIN_PASSWORD = "password";
+    public static String USERS_INFO_ID = "users_info_id";
+    public static String GAS_BOOKING_ID = "gas_booking_id";
+    public static String BOY_ID = "boy_id";
+    public static String DATE = "date";
 }

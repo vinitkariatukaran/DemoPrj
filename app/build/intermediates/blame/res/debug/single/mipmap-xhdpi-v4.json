@@ -8,12 +8,12 @@
         "source": "E:\\DemoPrjMain\\DemoPrj\\app\\src\\main\\res\\mipmap-xhdpi\\nearby.png"
     },
     {
-        "merged": "E:\\DemoPrjMain\\DemoPrj\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xhdpi-v4\\ic_person.png",
-        "source": "E:\\DemoPrjMain\\DemoPrj\\app\\src\\main\\res\\mipmap-xhdpi\\ic_person.png"
-    },
-    {
         "merged": "E:\\DemoPrjMain\\DemoPrj\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xhdpi-v4\\ic_filter.png",
         "source": "E:\\DemoPrjMain\\DemoPrj\\app\\src\\main\\res\\mipmap-xhdpi\\ic_filter.png"
+    },
+    {
+        "merged": "E:\\DemoPrjMain\\DemoPrj\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xhdpi-v4\\ic_person.png",
+        "source": "E:\\DemoPrjMain\\DemoPrj\\app\\src\\main\\res\\mipmap-xhdpi\\ic_person.png"
     },
     {
         "merged": "E:\\DemoPrjMain\\DemoPrj\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xhdpi-v4\\ic_arrow_black.png",

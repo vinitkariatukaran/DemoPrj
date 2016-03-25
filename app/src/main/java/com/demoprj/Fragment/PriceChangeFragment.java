@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.widget.NestedScrollView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,17 +26,31 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.demoprj.BaseRequest.RestModel.GasSizePrice;
+import com.demoprj.BaseRequest.RestModel.TransactionDetail;
+import com.demoprj.BaseRequest.baseModel;
 import com.demoprj.Constant.AppConstant;
 import com.demoprj.ParseModel.GasSize;
 import com.demoprj.R;
+import com.demoprj.Utils.AppController;
+import com.demoprj.Utils.CustomVolleyRequestQueue;
 import com.demoprj.Utils.Utils;
+import com.google.gson.reflect.TypeToken;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.SaveCallback;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class PriceChangeFragment extends Fragment implements AdapterView.OnItemSelectedListener, RadioGroup.OnCheckedChangeListener, View.OnClickListener {
 
@@ -65,14 +80,18 @@ public class PriceChangeFragment extends Fragment implements AdapterView.OnItemS
     TextView lblCo2Price;
     TextView lblCo3;
     TextView lblCo3Price;
+
     public PriceChangeFragment() {
         // Required empty public constructor
     }
 
-//    Vinit K
+    //    Vinit K
     ViewGroup mainContainer;
     InputMethodManager imm;
     LinearLayout tablePrice;
+
+    List<GasSizePrice> gasSizePriceList = new ArrayList<>();
+
     @Override
     public void onStart() {
         super.onStart();
@@ -81,7 +100,7 @@ public class PriceChangeFragment extends Fragment implements AdapterView.OnItemS
     }
 
     private void hideKeyboard() {
-        if(mainContainer!=null && imm!=null)
+        if (mainContainer != null && imm != null)
             imm.hideSoftInputFromWindow(mainContainer.getWindowToken(), 0);
     }
 
@@ -91,7 +110,7 @@ public class PriceChangeFragment extends Fragment implements AdapterView.OnItemS
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_price_change, container, false);
         mainContainer = container;
-        imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 
         progressDialog = new ProgressDialog(getActivity());
         progressDialog.setCanceledOnTouchOutside(false);
@@ -112,7 +131,7 @@ public class PriceChangeFragment extends Fragment implements AdapterView.OnItemS
         lblCo3 = (TextView) rootView.findViewById(R.id.lblCo3);
         lblCo3Price = (TextView) rootView.findViewById(R.id.lblCo3Price);
 
-        tablePrice = (LinearLayout)rootView.findViewById(R.id.tablePrice);
+        tablePrice = (LinearLayout) rootView.findViewById(R.id.tablePrice);
 
         txtPriceBookQuantity = (EditText) rootView.findViewById(R.id.txtPriceBookQuantity);
         svPrice = (NestedScrollView) rootView.findViewById(R.id.svPrice);
@@ -126,8 +145,8 @@ public class PriceChangeFragment extends Fragment implements AdapterView.OnItemS
         tablePrice.setVisibility(View.INVISIBLE);
         FetchiGasSize();
         btnPriceChange.setOnClickListener(this);
-        if(!fromWhere)
-            SettingGasSize(1,1);
+        if (!fromWhere)
+            SettingGasSize(1, 1);
         spnPriceBookGasSize.setOnItemSelectedListener(this);
 
         rgPriceBookType.setOnCheckedChangeListener(this);
@@ -135,45 +154,123 @@ public class PriceChangeFragment extends Fragment implements AdapterView.OnItemS
     }
 
     private void FetchiGasSize() {
-        if(Utils.isInternetAvailable(getActivity())) {
-            ParseQuery<GasSize> gasSizeParseQuery = ParseQuery.getQuery(GasSize.class);
-            gasSizeParseQuery.orderByAscending(AppConstant.USER_GAS_TYPE_ID);
-            gasSizeParseQuery.findInBackground(new FindCallback<GasSize>() {
-                @Override
-                public void done(List<GasSize> objects, ParseException e) {
-                    if(e==null){
-                        if(objects.size()>0){
-                            lblDo1.setText(objects.get(0).getGasSize()+"");
-                            lblDo1Price.setText(objects.get(0).getPrice()+"");
-                            lblDo2.setText(objects.get(1).getGasSize()+"");
-                            lblDo2Price.setText(objects.get(1).getPrice()+"");
-                            double size = objects.get(2).getGasSize();
-                            float size1 = Float.parseFloat(objects.get(2).getGasSize()+"");
-                            lblDo3.setText(objects.get(2).getGasSize()+"");
-                            lblDo3Price.setText(objects.get(2).getPrice()+"");
-                            lblDo4.setText(objects.get(3).getGasSize()+"");
-                            lblDo4Price.setText(objects.get(3).getPrice()+"");
-                            lblCo1.setText(objects.get(4).getGasSize()+"");
-                            lblCo1Price.setText(objects.get(4).getPrice()+"");
-                            lblCo2.setText(objects.get(5).getGasSize()+"");
-                            lblCo2Price.setText(objects.get(5).getPrice()+"");
-                            lblCo3.setText(objects.get(6).getGasSize()+"");
-                            lblCo3Price.setText(objects.get(6).getPrice()+"");
-                            tablePrice.setVisibility(View.VISIBLE);
-                        }
-                    }else{
+        if (Utils.isInternetAvailable(getActivity())) {
+//            ParseQuery<GasSize> gasSizeParseQuery = ParseQuery.getQuery(GasSize.class);
+//            gasSizeParseQuery.orderByAscending(AppConstant.USER_GAS_TYPE_ID);
+//            gasSizeParseQuery.findInBackground(new FindCallback<GasSize>() {
+//                @Override
+//                public void done(List<GasSize> objects, ParseException e) {
+//                    if(e==null){
+//                        if(objects.size()>0){
+//                            lblDo1.setText(objects.get(0).getGasSize()+"");
+//                            lblDo1Price.setText(objects.get(0).getPrice()+"");
+//                            lblDo2.setText(objects.get(1).getGasSize()+"");
+//                            lblDo2Price.setText(objects.get(1).getPrice()+"");
+//                            double size = objects.get(2).getGasSize();
+//                            float size1 = Float.parseFloat(objects.get(2).getGasSize()+"");
+//                            lblDo3.setText(objects.get(2).getGasSize()+"");
+//                            lblDo3Price.setText(objects.get(2).getPrice()+"");
+//                            lblDo4.setText(objects.get(3).getGasSize()+"");
+//                            lblDo4Price.setText(objects.get(3).getPrice()+"");
+//                            lblCo1.setText(objects.get(4).getGasSize()+"");
+//                            lblCo1Price.setText(objects.get(4).getPrice()+"");
+//                            lblCo2.setText(objects.get(5).getGasSize()+"");
+//                            lblCo2Price.setText(objects.get(5).getPrice()+"");
+//                            lblCo3.setText(objects.get(6).getGasSize()+"");
+//                            lblCo3Price.setText(objects.get(6).getPrice()+"");
+//                            tablePrice.setVisibility(View.VISIBLE);
+//                        }
+//                    }else{
+//
+//                    }
+//                }
+//            });
 
-                    }
+            RequestQueue queue = CustomVolleyRequestQueue.getInstance(getActivity().getApplicationContext()).getRequestQueue();
+            String url = AppController.mainUrl + AppController.API_GET_GAS_SIZE;
+            Type type = new TypeToken<List<GasSizePrice>>() {
+            }.getType();
+            baseModel<String> bm = new baseModel(Request.Method.POST, url, null, type, new Response.Listener() {
+                @Override
+                public void onResponse(Object response) {
+                    Log.e("response", response.toString());
+                    gasSizePriceList.clear();
+                    gasSizePriceList = (List<GasSizePrice>) response;
+//                    progressDialog.dismiss();
+                    secondSync();
                 }
-            });
-        }else{
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Log.e("response error", error.toString());
+//                    progressDialog.dismiss();
+                }
+            }) {
+                @Override
+                protected Map<String, String> getParams() throws AuthFailureError {
+                    Map<String, String> param = new HashMap<>();
+                    param.put(AppController.GAS_TYPE_ID, 1 + "");
+                    return param;
+                }
+            };
+            queue.add(bm);
+        } else {
             Toast.makeText(getActivity(), "Internet Connection is not avaliable. Please try again later", Toast.LENGTH_LONG).show();
+            progressDialog.dismiss();
         }
     }
 
+    private void secondSync() {
+        RequestQueue queue1 = CustomVolleyRequestQueue.getInstance(getActivity().getApplicationContext()).getRequestQueue();
+            String url = AppController.mainUrl + AppController.API_GET_GAS_SIZE;
+            Type type = new TypeToken<List<GasSizePrice>>() {
+            }.getType();
+        baseModel bm1 = new baseModel(Request.Method.POST, url, null, type, new Response.Listener() {
+            @Override
+            public void onResponse(Object response) {
+                Log.e("response", response.toString());
+//                    gasSizePriceList.clear();
+                List<GasSizePrice> gasList = (List<GasSizePrice>) response;
+                gasSizePriceList.addAll(gasList);
+                lblDo1.setText(gasSizePriceList.get(0).getGasSize() + "");
+                lblDo1Price.setText(gasSizePriceList.get(0).getPrice() + "");
+//                    lblDo2.setText(objects.get(1).getGasSize() + "");
+//                    lblDo2Price.setText(objects.get(1).getPrice() + "");
+//                    double size = objects.get(2).getGasSize();
+//                    float size1 = Float.parseFloat(objects.get(2).getGasSize() + "");
+//                    lblDo3.setText(objects.get(2).getGasSize() + "");
+//                    lblDo3Price.setText(objects.get(2).getPrice() + "");
+//                    lblDo4.setText(objects.get(3).getGasSize() + "");
+//                    lblDo4Price.setText(objects.get(3).getPrice() + "");
+//                    lblCo1.setText(objects.get(4).getGasSize() + "");
+//                    lblCo1Price.setText(objects.get(4).getPrice() + "");
+//                    lblCo2.setText(objects.get(5).getGasSize() + "");
+//                    lblCo2Price.setText(objects.get(5).getPrice() + "");
+//                    lblCo3.setText(objects.get(6).getGasSize() + "");
+//                    lblCo3Price.setText(objects.get(6).getPrice() + "");
+                tablePrice.setVisibility(View.VISIBLE);
+                progressDialog.dismiss();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("response error", error.toString());
+                progressDialog.dismiss();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> param = new HashMap<>();
+                param.put(AppController.GAS_TYPE_ID, 2 + "");
+                return param;
+            }
+        };
+        queue1.add(bm1);
+    }
+
     private void SettingGasSize(int GasTypeId, final int showProgress) {
-        if(Utils.isInternetAvailable(getActivity())) {
-            if(showProgress==1) {
+        if (Utils.isInternetAvailable(getActivity())) {
+            if (showProgress == 1) {
                 progressDialog.setTitle("Fetching Detail");
                 progressDialog.show();
             }
@@ -202,21 +299,21 @@ public class PriceChangeFragment extends Fragment implements AdapterView.OnItemS
                     }
                 }
             });
-        }else {
+        } else {
             Toast.makeText(getActivity(), "Internet Connection is not avaliable. Please try again later", Toast.LENGTH_LONG).show();
         }
     }
 
     @Override
     public void onClick(View v) {
-        if(txtPriceBookQuantity.getText()==null || txtPriceBookQuantity.getText().length()<=0){
+        if (txtPriceBookQuantity.getText() == null || txtPriceBookQuantity.getText().length() <= 0) {
             Snackbar.make(svPrice, "Please enter Price", Snackbar.LENGTH_LONG).show();
             txtPriceBookQuantity.requestFocus();
             inputPriceBookQuantity.setError(getResources().getString(R.string.Field_require));
             inputPriceBookQuantity.setErrorEnabled(true);
-        }else if(oldPrice.equals(txtPriceBookQuantity.getText().toString())){
+        } else if (oldPrice.equals(txtPriceBookQuantity.getText().toString())) {
             Snackbar.make(svPrice, "You have not change price till now", Snackbar.LENGTH_LONG).show();
-        }else{
+        } else {
             DisplayAlertDialog();
         }
     }
@@ -229,7 +326,7 @@ public class PriceChangeFragment extends Fragment implements AdapterView.OnItemS
         dialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                if(Utils.isInternetAvailable(getActivity())) {
+                if (Utils.isInternetAvailable(getActivity())) {
                     ParseQuery<GasSize> gasSizeChangeQuery = ParseQuery.getQuery(GasSize.class);
                     gasSizeChangeQuery.whereEqualTo(AppConstant.OBJECT_ID, selectedGasSize.getObjectId());
                     gasSizeChangeQuery.findInBackground(new FindCallback<GasSize>() {
@@ -257,7 +354,7 @@ public class PriceChangeFragment extends Fragment implements AdapterView.OnItemS
                             }
                         }
                     });
-                }else {
+                } else {
                     Toast.makeText(getActivity(), "Internet Connection is not avaliable. Please try again later", Toast.LENGTH_LONG).show();
                 }
             }
@@ -269,7 +366,7 @@ public class PriceChangeFragment extends Fragment implements AdapterView.OnItemS
             }
         });
         dialog.show();
-        if(progressDialog!=null)
+        if (progressDialog != null)
             progressDialog.hide();
 
         fromWhere = true;
@@ -279,7 +376,7 @@ public class PriceChangeFragment extends Fragment implements AdapterView.OnItemS
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         selectedGasSize = gasSizeList.get(position);
-        oldPrice = gasSizeList.get(position).getPrice()+"";
+        oldPrice = gasSizeList.get(position).getPrice() + "";
         txtPriceBookQuantity.setText(gasSizeList.get(position).getPrice() + "");
     }
 
@@ -290,14 +387,14 @@ public class PriceChangeFragment extends Fragment implements AdapterView.OnItemS
 
     @Override
     public void onCheckedChanged(RadioGroup group, int checkedId) {
-        switch (group.getCheckedRadioButtonId()){
-            case R.id.rbPriceBookCommercial :
-                if(!fromWhere)
-                    SettingGasSize(2,0);
+        switch (group.getCheckedRadioButtonId()) {
+            case R.id.rbPriceBookCommercial:
+                if (!fromWhere)
+                    SettingGasSize(2, 0);
                 break;
-            case R.id.rbPriceBookDomestic :
-                if(!fromWhere)
-                    SettingGasSize(1,0);
+            case R.id.rbPriceBookDomestic:
+                if (!fromWhere)
+                    SettingGasSize(1, 0);
                 break;
         }
         fromWhere = false;

@@ -19,21 +19,37 @@ import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
 import com.demoprj.Adapter.DeliveryDetailAdapter;
+import com.demoprj.Adapter.TransactionDetailAdapter;
 import com.demoprj.AdminHomeActivity;
+import com.demoprj.BaseRequest.RestModel.Login;
+import com.demoprj.BaseRequest.RestModel.TransactionDetail;
+import com.demoprj.BaseRequest.baseModel;
 import com.demoprj.Constant.AppConstant;
 import com.demoprj.ParseModel.GasBooking;
+import com.demoprj.ParticularCustomerDetailInfo;
 import com.demoprj.R;
+import com.demoprj.Utils.AppController;
+import com.demoprj.Utils.CustomVolleyRequestQueue;
 import com.demoprj.Utils.Utils;
+import com.google.gson.reflect.TypeToken;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 
+import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by mounil.shah on 12/24/2015.
@@ -50,6 +66,7 @@ public class UndeliverySegment extends Fragment implements View.OnClickListener,
     int searchPosition = 0;
     Calendar now2 = null;
     ArrayList<GasBooking> gasBookingList = new ArrayList<GasBooking>();
+    ArrayList<TransactionDetail> transactionDetails = new ArrayList<>();
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -106,32 +123,60 @@ public class UndeliverySegment extends Fragment implements View.OnClickListener,
         progressDialog.setMessage("Please wait");
         progressDialog.show();
         if(Utils.isInternetAvailable(getActivity())) {
-            ParseQuery<GasBooking> gasBookingQuery = ParseQuery.getQuery(GasBooking.class);
-            gasBookingQuery.whereEqualTo(AppConstant.GASBOOKING_DELIVERY_STATUS, false);
-            gasBookingQuery.orderByAscending(AppConstant.GASBOOKING_DATE_OF_BOOKING);
-//            gasBookingQuery.whereGreaterThanOrEqualTo(AppConstant.GASBOOKING_DATE_OF_BOOKING, now2.getTime());
-            gasBookingQuery.include(AppConstant.GASBOOKING_USER_ID);
-            gasBookingQuery.include(AppConstant.GASBOOKING_GAS_SIZE_ID);
-            gasBookingQuery.include(AppConstant.GASBOOKING_DELIVERYBOY_ID);
-            gasBookingQuery.findInBackground(new FindCallback<GasBooking>() {
-                @Override
-                public void done(List<GasBooking> objects, ParseException e) {
-                    if (e == null) {
-                        if (objects.size() > 0) {
-                            if (gasBookingList.size() > 0) {
-                                gasBookingList.clear();
-                            }
-                            gasBookingList.addAll(objects);
-                            adapter = new DeliveryDetailAdapter(getActivity(), (ArrayList<GasBooking>) objects,2);
-                            rvDeliveryDetail.setAdapter(adapter);
-                        }
-                    } else {
+//            ParseQuery<GasBooking> gasBookingQuery = ParseQuery.getQuery(GasBooking.class);
+//            gasBookingQuery.whereEqualTo(AppConstant.GASBOOKING_DELIVERY_STATUS, false);
+//            gasBookingQuery.orderByAscending(AppConstant.GASBOOKING_DATE_OF_BOOKING);
+////            gasBookingQuery.whereGreaterThanOrEqualTo(AppConstant.GASBOOKING_DATE_OF_BOOKING, now2.getTime());
+//            gasBookingQuery.include(AppConstant.GASBOOKING_USER_ID);
+//            gasBookingQuery.include(AppConstant.GASBOOKING_GAS_SIZE_ID);
+//            gasBookingQuery.include(AppConstant.GASBOOKING_DELIVERYBOY_ID);
+//            gasBookingQuery.findInBackground(new FindCallback<GasBooking>() {
+//                @Override
+//                public void done(List<GasBooking> objects, ParseException e) {
+//                    if (e == null) {
+//                        if (objects.size() > 0) {
+//                            if (gasBookingList.size() > 0) {
+//                                gasBookingList.clear();
+//                            }
+//                            gasBookingList.addAll(objects);
+//                            adapter = new DeliveryDetailAdapter(getActivity(), (ArrayList<GasBooking>) objects,2);
+//                            rvDeliveryDetail.setAdapter(adapter);
+//                        }
+//                    } else {
+//
+//                    }
+//                    if (progressDialog != null)
+//                        progressDialog.hide();
+//                }
+//            });
 
+            RequestQueue queue = CustomVolleyRequestQueue.getInstance(getActivity().getApplicationContext()).getRequestQueue();
+            String url = AppController.mainUrl + AppController.API_UNDELIVERED_BOTTLE;
+            Type type =  new TypeToken<List<TransactionDetail>>(){}.getType();
+            baseModel<TransactionDetail> bm = new baseModel(Request.Method.GET, url, null, type, new Response.Listener() {
+                @Override
+                public void onResponse(Object response) {
+                    List<TransactionDetail> transactionDetailList = (List<TransactionDetail>) response;
+                    if (transactionDetails.size() > 0) {
+                        transactionDetails.clear();
                     }
+                    transactionDetails.addAll(transactionDetailList);
+//                    adapter = new DeliveryDetailAdapter(getActivity(), (ArrayList<GasBooking>) objects,2);
+                    adapter = new DeliveryDetailAdapter(getActivity(), transactionDetailList, 2);
+                    rvDeliveryDetail.setAdapter(adapter);
+                    if (progressDialog != null)
+                        progressDialog.hide();
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Log.e("response error", error.toString());
                     if (progressDialog != null)
                         progressDialog.hide();
                 }
             });
+
+            queue.add(bm);
         }else {
             Toast.makeText(getActivity(), "Internet Connection is not avaliable. Please try again later", Toast.LENGTH_LONG).show();
         }
@@ -224,9 +269,9 @@ public class UndeliverySegment extends Fragment implements View.OnClickListener,
 
     @Override
     public void afterTextChanged(Editable s) {
-        ArrayList<GasBooking> searchUserList = new ArrayList<>();
-        for (GasBooking d : gasBookingList) {
-            String name = d.getName();
+        ArrayList<TransactionDetail> searchUserList = new ArrayList<>();
+        for (TransactionDetail d : transactionDetails) {
+            String name = d.getFullName();
             if (name.toLowerCase().contains(txtDeliverySearch.getText().toString().toLowerCase())) {
                 searchUserList.add(d);
             }
