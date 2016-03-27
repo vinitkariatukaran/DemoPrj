@@ -31,8 +31,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.demoprj.BaseRequest.RestModel.GasSizePrice;
-import com.demoprj.BaseRequest.RestModel.TransactionDetail;
+import com.demoprj.gsonmodels.pack.GasSizePrice;
 import com.demoprj.BaseRequest.baseModel;
 import com.demoprj.Constant.AppConstant;
 import com.demoprj.ParseModel.GasSize;
@@ -222,9 +221,9 @@ public class PriceChangeFragment extends Fragment implements AdapterView.OnItemS
 
     private void secondSync() {
         RequestQueue queue1 = CustomVolleyRequestQueue.getInstance(getActivity().getApplicationContext()).getRequestQueue();
-            String url = AppController.mainUrl + AppController.API_GET_GAS_SIZE;
-            Type type = new TypeToken<List<GasSizePrice>>() {
-            }.getType();
+        String url = AppController.mainUrl + AppController.API_GET_GAS_SIZE;
+        Type type = new TypeToken<List<GasSizePrice>>() {
+        }.getType();
         baseModel bm1 = new baseModel(Request.Method.POST, url, null, type, new Response.Listener() {
             @Override
             public void onResponse(Object response) {
@@ -398,5 +397,8 @@ public class PriceChangeFragment extends Fragment implements AdapterView.OnItemS
                 break;
         }
         fromWhere = false;
+    }
+
+public void refresh() {
     }
 }
